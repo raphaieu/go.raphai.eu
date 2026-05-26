@@ -61,14 +61,11 @@ func main() {
 	mux := http.NewServeMux()
 
 	mux.Handle("GET /static/", http.StripPrefix("/static/", http.FileServer(http.FS(staticFS))))
-
-	mux.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path == "/" {
-			http.Redirect(w, r, "/admin", http.StatusFound)
-			return
-		}
-		http.NotFound(w, r)
+	mux.HandleFunc("GET /health", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("ok"))
 	})
+
+	mux.HandleFunc("GET /", h.Root)
 	mux.HandleFunc("GET /{slug}", h.Redirect)
 
 	mux.HandleFunc("GET /admin/login", h.AdminLogin)

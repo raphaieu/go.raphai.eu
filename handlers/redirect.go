@@ -3,6 +3,7 @@ package handlers
 import (
 	"bytes"
 	"html/template"
+	"log"
 	"net/http"
 	"net/url"
 
@@ -17,6 +18,15 @@ type Handler struct {
 	Tmpl         *template.Template
 	AdminUser    string
 	AdminPass    string
+}
+
+func (h *Handler) Root(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path == "/" {
+		http.Redirect(w, r, "/admin", http.StatusFound)
+		return
+	}
+	log.Printf("root: unexpected path %q", r.URL.Path)
+	http.NotFound(w, r)
 }
 
 func (h *Handler) render(w http.ResponseWriter, page, title string, data interface{}) {
