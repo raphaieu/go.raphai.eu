@@ -1,0 +1,24 @@
+{{ define "base" }}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .Title }}</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <nav>
+        <a href="/admin" class="brand">go.raphai.eu</a>
+        <div class="nav-links">
+            <a href="/admin">Redirects</a>
+            <a href="/admin/new">Novo</a>
+            <form action="/admin/logout" method="post" class="inline">
+                <button type="submit" class="link">Sair</button>
+            </form>
+        </div>
+    </nav>
+    <main>{{ .Content }}</main>
+</body>
+</html>
+{{ end }}

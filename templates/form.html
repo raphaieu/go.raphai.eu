@@ -1,0 +1,60 @@
+<h1>{{ if .IsNew }}Novo Redirect{{ else }}Editar Redirect{{ end }}</h1>
+
+{{ if .Error }}<div class="msg error">{{ .Error }}</div>{{ end }}
+
+<form method="post" class="redirect-form">
+    <div class="field">
+        <label for="slug">Slug</label>
+        <input type="text" id="slug" name="slug" value="{{ .Redirect.Slug }}" required placeholder="meu-projeto">
+        <small>URL: go.raphai.eu/<strong>{{ .Redirect.Slug }}</strong></small>
+    </div>
+
+    <div class="field">
+        <label for="target_url">URL de Destino</label>
+        <input type="url" id="target_url" name="target_url" value="{{ .Redirect.TargetURL }}" required placeholder="https://meuprojeto.com">
+    </div>
+
+    <div class="field">
+        <label for="redirect_type">Tipo de Redirect</label>
+        <select id="redirect_type" name="redirect_type">
+            <option value="meta_refresh" {{ if eq .Redirect.RedirectType "meta_refresh" }}selected{{ end }}>Meta Refresh (com loading) — SEO-friendly</option>
+            <option value="direct_301" {{ if eq .Redirect.RedirectType "direct_301" }}selected{{ end }}>301 Redirect (direto, sem loading)</option>
+        </select>
+    </div>
+
+    <fieldset>
+        <legend>UTM Parameters (Google Analytics)</legend>
+        <div class="field">
+            <label for="utm_source">utm_source</label>
+            <input type="text" id="utm_source" name="utm_source" value="{{ .Redirect.UTMSource }}" placeholder="raphai">
+        </div>
+        <div class="field">
+            <label for="utm_medium">utm_medium</label>
+            <input type="text" id="utm_medium" name="utm_medium" value="{{ .Redirect.UTMMedium }}" placeholder="redirect">
+        </div>
+        <div class="field">
+            <label for="utm_campaign">utm_campaign</label>
+            <input type="text" id="utm_campaign" name="utm_campaign" value="{{ .Redirect.UTMCampaign }}" placeholder="">
+        </div>
+        <div class="field">
+            <label for="utm_term">utm_term</label>
+            <input type="text" id="utm_term" name="utm_term" value="{{ .Redirect.UTMTerm }}" placeholder="">
+        </div>
+        <div class="field">
+            <label for="utm_content">utm_content</label>
+            <input type="text" id="utm_content" name="utm_content" value="{{ .Redirect.UTMContent }}" placeholder="">
+        </div>
+    </fieldset>
+
+    <div class="field checkbox">
+        <label>
+            <input type="checkbox" name="is_active" {{ if .Redirect.IsActive }}checked{{ end }}>
+            Ativo
+        </label>
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" class="btn">{{ if .IsNew }}Criar{{ else }}Salvar{{ end }}</button>
+        <a href="/admin" class="btn secondary">Cancelar</a>
+    </div>
+</form>

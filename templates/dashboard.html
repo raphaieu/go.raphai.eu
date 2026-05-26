@@ -1,0 +1,42 @@
+<h1>Redirects</h1>
+{{ if .Success }}<div class="msg success">{{ .Success }}</div>{{ end }}
+<div class="table-wrap">
+<table>
+    <thead>
+        <tr>
+            <th>Slug</th>
+            <th>Destino</th>
+            <th>Tipo</th>
+            <th>Visitas</th>
+            <th>Ativo</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{ range .Redirects }}
+        <tr>
+            <td><code>{{ .Slug }}</code></td>
+            <td class="url" title="{{ .TargetURL }}">{{ .TargetURL }}</td>
+            <td>{{ if eq .RedirectType "direct_301" }}301{{ else }}Meta{{ end }}</td>
+            <td>{{ .VisitCount }}</td>
+            <td>{{ if .IsActive }}Sim{{ else }}Não{{ end }}</td>
+            <td class="actions">
+                <a href="/admin/edit/{{ .ID }}" class="btn sm">Editar</a>
+                <form action="/admin/toggle/{{ .ID }}" method="post" class="inline">
+                    <button type="submit" class="btn sm {{ if .IsActive }}warn{{ else }}ok{{ end }}">
+                        {{ if .IsActive }}Desativar{{ else }}Ativar{{ end }}
+                    </button>
+                </form>
+                <form action="/admin/delete/{{ .ID }}" method="post" class="inline" onsubmit="return confirm('Excluir {{ .Slug }}?')">
+                    <button type="submit" class="btn sm danger">Excluir</button>
+                </form>
+            </td>
+        </tr>
+        {{ else }}
+        <tr>
+            <td colspan="6" class="empty">Nenhum redirect cadastrado. <a href="/admin/new">Criar primeiro</a></td>
+        </tr>
+        {{ end }}
+    </tbody>
+</table>
+</div>
